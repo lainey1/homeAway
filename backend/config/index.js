@@ -1,6 +1,6 @@
 // backend/config/index.js
 
-// ************ EXPORTS *********************************/
+// ***** EXPORTS *****/
 
 module.exports = {
   environment: process.env.NODE_ENV || "development",

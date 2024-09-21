@@ -50,5 +50,5 @@ const routes = require("./routes");
 
 app.use(routes); // Connect all the routes
 
-// ************ EXPORTS *********************************/
+// ***** EXPORTS *****/
 module.exports = app;
