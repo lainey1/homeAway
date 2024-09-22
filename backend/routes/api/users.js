@@ -43,16 +43,16 @@ router.post("/", validateSignup, async (req, res) => {
     email,
     username,
     hashedPassword,
-    firstName,
-    lastName,
+    firstName, // added
+    lastName, // added
   });
 
   const safeUser = {
     id: user.id,
     email: user.email,
     username: user.username,
-    firstName: user.firstName,
-    lastName: user.lastName,
+    firstName: user.firstName, // added
+    lastName: user.lastName, // added
   };
 
   await setTokenCookie(res, safeUser);

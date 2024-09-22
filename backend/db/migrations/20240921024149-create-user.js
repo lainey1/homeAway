@@ -33,12 +33,12 @@ module.exports = {
           allowNull: false,
         },
         firstName: {
-          // Added firstName column
+          // Added firstName column; need merged
           type: Sequelize.STRING,
           allowNull: true,
         },
         lastName: {
-          // Added lastName column
+          // Added lastName column; need merged
           type: Sequelize.STRING,
           allowNull: true,
         },
