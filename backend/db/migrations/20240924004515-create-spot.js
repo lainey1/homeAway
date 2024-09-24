@@ -1,3 +1,5 @@
+// backend/db/migrations/####-create-spot.js
+
 "use strict";
 
 let options = {};
