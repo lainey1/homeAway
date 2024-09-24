@@ -11,21 +11,21 @@ const router = express.Router();
 const validateSpot = [
   check("address")
     .exists({ checkFalsy: true })
-    .withMessage("Please provide an address."),
-  check("city")
-    .exists({ checkFalsy: true })
-    .withMessage("Please provide a city."),
-  check("state")
-    .exists({ checkFalsy: true })
-    .withMessage("Please provide a state."),
+    .withMessage("Street address is required"),
+  check("city").exists({ checkFalsy: true }).withMessage("City is required"),
+  check("state").exists({ checkFalsy: true }).withMessage("State is required"),
   check("country")
     .exists({ checkFalsy: true })
-    .withMessage("Please provide a country."),
-  check("lat").isFloat().withMessage("Please provide a valide latitude."),
-  check("lng").isFloat().withMessage("Please provide a valide longitude."),
+    .withMessage("Country is required"),
+  check("lat").isFloat().withMessage("Latitude must be within -90 and 90"),
+  check("lng").isFloat().withMessage("Longitude must be within -180 and 180"),
   check("name")
     .exists({ checkFalsy: true })
-    .withMessage("Please provide a name"),
+    .isLength({ min: 50 })
+    .withMessage("Name must be less than 50 characters"),
+  check("description")
+    .exists({ checkFalsy: true })
+    .withMessage("Description is required"),
   check("price").isDecimal().withMessage("Please provide a valid price."),
   handleValidationErrors,
 ];
