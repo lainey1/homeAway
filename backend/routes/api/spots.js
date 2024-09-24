@@ -35,8 +35,6 @@ router.post("/", validateSpot, async (req, res) => {
   const { address, city, state, country, lat, lng, name, description, price } =
     req.body;
 
-  const ownerID = req.user.id; //! Fixed. Updated code to get ownerId from req.user.id
-
   const ownerId = req.user.id; //! BUG FIX: Get ownerId from the authenticated user
 
   const spot = await Spot.create({
