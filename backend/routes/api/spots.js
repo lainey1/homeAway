@@ -34,6 +34,26 @@ const validateSpot = [
   handleValidationErrors,
 ];
 
+//* GET details of a Spot by ID
+router.get("/:spotId", async (req, res) => {
+  const { spotId } = req.params; // GET from URL
+  console.log(spotId);
+
+  const spot = await Spot.findByPk(spotId); // Find spot by ID;
+
+  // Check if the spot exists
+  if (!spot) {
+    return res.status(404).json({
+      message: "Spot not found",
+      errors: {
+        spotId: "Spot couldn't be found",
+      },
+    });
+  }
+
+  return res.status(200).json(spot);
+});
+
 //* Edit a Spot
 router.put("/:spotId", requireAuth, validateSpot, async (req, res) => {
   const userId = req.user.id; // GET authenticated userId
