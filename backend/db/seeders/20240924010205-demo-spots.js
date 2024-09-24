@@ -29,7 +29,7 @@ module.exports = {
         lng: -118.2437,
         name: "Serenity Haven",
         description:
-          "Welcome to Serenity Haven, your peaceful retreat in the heart of nature. Nestled among lush greenery, this charming home offers a perfect escape from the hustle and bustle of everyday life. Enjoy the cozy living spaces, fully equipped kitchen, and a private garden where you can unwind with a good book or sip your morning coffee. With modern amenities and thoughtful touches throughout, Serenity Haven is designed for relaxation and rejuvenation. Whether you’re exploring local trails or simply enjoying the tranquil surroundings, this is the ideal spot for your next getaway.",
+          "Welcome to Serenity Haven, your peaceful retreat in the heart of nature.",
         price: 150.0,
         avgRating: 4.8,
         previewImage: "image url",
@@ -44,7 +44,7 @@ module.exports = {
         lng: -74.006,
         name: "Learn Hub",
         description:
-          "Experience the magic of nature in the Tranquil Treehouse, an enchanting escape perched among the treetops. This unique home features panoramic views and a cozy atmosphere, perfect for a romantic getaway or a family adventure. With spacious living areas, a fully equipped kitchen, and an outdoor deck, you can immerse yourself in the sights and sounds of the forest. Relax in the hammock, explore nearby hiking trails, or simply enjoy the serenity of your surroundings. The Tranquil Treehouse offers a one-of-a-kind experience that brings you closer to nature while providing all the comforts of home.",
+          "Experience the magic of nature in the Tranquil Treehouse, an enchanting escape perched among the treetops.",
         price: 200.0,
         avgRating: 4.7,
         previewImage: "learn-hub-image-url",
