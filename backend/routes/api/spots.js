@@ -35,13 +35,33 @@ const validateSpot = [
 ];
 
 //* Edit a Spot
-router.put("/:spotId", requireAuth, async (req, res) => {
+router.put("/:spotId", requireAuth, validateSpot, async (req, res) => {
   const userId = req.user.id; // GET authenticated userId
   const { spotId } = req.params; // GET from URL
   const { address, city, state, country, lat, lng, name, description, price } =
     req.body;
 
   const spot = await Spot.findByPk(spotId); // Find spot by ID;
+
+  // Check if the spot exists
+  if (!spot) {
+    return res.status(404).json({
+      message: "Spot not found",
+      errors: {
+        spotId: "Spot couldn't be found",
+      },
+    });
+  }
+
+  // Check if the authenticated user is the spot's owner
+  if (spot.ownerId !== userId) {
+    return res.status(200).json({
+      message: "Forbidden",
+      errors: {
+        authorization: "Only the owner can edit this spot",
+      },
+    });
+  }
 
   //Update the spot with new details
   spot.address = address;
