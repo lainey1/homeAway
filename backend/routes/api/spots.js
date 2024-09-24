@@ -7,6 +7,7 @@ const { requireAuth } = require("../../utils/auth");
 
 const router = express.Router();
 
+
 //* Validation for creating and updating spots
 const validateSpot = [
   check("address")
