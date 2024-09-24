@@ -34,6 +34,49 @@ const validateSpot = [
   handleValidationErrors,
 ];
 
+//* Edit a Spot
+router.put("/:spotId", requireAuth, async (req, res) => {
+  const userId = req.user.id; // GET authenticated userId
+  const { spotId } = req.params; // GET from URL
+  const { address, city, state, country, lat, lng, name, description, price } =
+    req.body;
+
+  const spot = await Spot.findByPk(spotId); // Find spot by ID;
+
+  //Update the spot with new details
+  spot.address = address;
+  spot.city = city;
+  spot.state = state;
+  spot.country = country;
+  spot.lat = lat;
+  spot.lng = lng;
+  spot.name = name;
+  spot.description = description;
+  spot.price = price;
+
+  await spot.save(); // save the updated spot
+
+  // response with updated spot
+  return res.status(200).json(spot);
+});
+
+//* GET all Spots owned by the Current User
+router.get("/current", requireAuth, async (req, res) => {
+  const userId = req.user.id;
+  const spots = await Spot.findAll({
+    where: {
+      ownerId: userId,
+    },
+  });
+  return res.json({ spots });
+});
+
+//* GET all Spots
+router.get("/", async (req, res) => {
+  const spots = await Spot.findAll();
+  return res.json(spots);
+});
+
 //* Create a new spot
 router.post("/", validateSpot, async (req, res) => {
   const { address, city, state, country, lat, lng, name, description, price } =
@@ -54,23 +97,6 @@ router.post("/", validateSpot, async (req, res) => {
     price,
   });
   return res.status(201).json(spot);
-});
-
-//* GET all Spots owned by the Current User
-router.get("/current", requireAuth, async (req, res) => {
-  const userId = req.user.id;
-  const spots = await Spot.findAll({
-    where: {
-      ownerId: userId,
-    },
-  });
-  return res.json({ spots });
-});
-
-//* GET all Spots
-router.get("/", async (req, res) => {
-  const spots = await Spot.findAll();
-  return res.json(spots);
 });
 
 // ***** EXPORTS *****/
