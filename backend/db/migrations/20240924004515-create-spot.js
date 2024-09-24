@@ -22,6 +22,10 @@ module.exports = {
         ownerId: {
           type: Sequelize.INTEGER,
           allowNull: false,
+          references: {
+            model: "Users", //! FORGOT to add relationship in migration
+            key: "id",
+          },
         },
         address: {
           type: Sequelize.STRING,
