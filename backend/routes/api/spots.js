@@ -17,11 +17,15 @@ const validateSpot = [
   check("country")
     .exists({ checkFalsy: true })
     .withMessage("Country is required"),
-  check("lat").isFloat().withMessage("Latitude must be within -90 and 90"),
-  check("lng").isFloat().withMessage("Longitude must be within -180 and 180"),
+  check("lat")
+    .isFloat({ min: -90, max: 90 })
+    .withMessage("Latitude must be within -90 and 90"),
+  check("lng")
+    .isFloat({ min: -90, max: 90 })
+    .withMessage("Longitude must be within -180 and 180"),
   check("name")
     .exists({ checkFalsy: true })
-    .isLength({ min: 50 })
+    .isLength({ max: 50 })
     .withMessage("Name must be less than 50 characters"),
   check("description")
     .exists({ checkFalsy: true })
