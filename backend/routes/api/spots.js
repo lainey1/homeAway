@@ -33,7 +33,7 @@ const validateSpot = [
 //* Create a new spot
 router.post("/", validateSpot, async (req, res) => {
   const {
-    ownerId,
+    // ownerId, //! BUG identified
     address,
     city,
     state,
@@ -44,6 +44,8 @@ router.post("/", validateSpot, async (req, res) => {
     description,
     price,
   } = req.body;
+
+  const ownerId = req.user.id; //! BUG FIX: Get ownerId from the authenticated user
 
   const spot = await Spot.create({
     ownerId,
