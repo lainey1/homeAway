@@ -1,5 +1,4 @@
 // backend/db/seeders/####-demo-user.js
-
 "use strict";
 
 const { User } = require("../models");
