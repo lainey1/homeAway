@@ -4,11 +4,6 @@
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Spot extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
     static associate(models) {
       Spot.belongsTo(models.User, {
         foreignKey: "ownerId",
@@ -59,6 +54,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       avgRating: {
+        //! Option to DELETE this later once aggregate
         type: DataTypes.FLOAT,
         allowNull: true,
       },

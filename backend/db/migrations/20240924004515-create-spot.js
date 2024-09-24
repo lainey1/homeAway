@@ -1,4 +1,4 @@
-// backend/db/migrations/####-create-spot.js
+// backend/db/migrations/20240924004515-create-spot
 
 "use strict";
 
@@ -26,6 +26,7 @@ module.exports = {
             model: "Users", //! FORGOT to add relationship in migration
             key: "id",
           },
+          onDelete: "CASCADE",
         },
         address: {
           type: Sequelize.STRING,

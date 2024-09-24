@@ -1,4 +1,4 @@
-// backend/db/migrations/####-create-user.js
+// backend/db/migrations/20240921024149-create-user
 
 "use strict";
 
