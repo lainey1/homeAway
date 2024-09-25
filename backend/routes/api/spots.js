@@ -149,9 +149,7 @@ router.post("/:spotId/reviews", requireAuth, async (req, res) => {
     const userId = req.user.id;
 
       // Check if the user has already submitted a review for this spot
-
     const errors = {};   
-
     const existingReview = await Review.findOne({
       where: { spotId, userId }
     });
@@ -211,13 +209,3 @@ router.post("/:spotId/reviews", requireAuth, async (req, res) => {
 // ***** EXPORTS *****/
 module.exports = router;
 
-
- // Check if the spot exists
-//  if (!spot) {
-//   return res.status(404).json({
-//     message: "Spot not found",
-//     errors: {
-//       spotId: "Spot couldn't be found",
-//     },
-//   });
-// }
