@@ -92,6 +92,73 @@ router.post("/", validateSpot, async (req, res) => {
   return res.status(201).json(spot);
 });
 
+//* Create a Review for a Spot based on the Spot's id
+
+router.post("/:spotId/reviews", requireAuth, async (req, res) => {
+  try {
+    const { review, stars } = req.body;
+    const { spotId } = req.params;
+    const userId = req.user.id;
+
+    // Check if the user has already submitted a review for this spot
+    const errors = {};
+    const existingReview = await Review.findOne({
+      where: { spotId, userId },
+    });
+
+    if (existingReview) {
+      return res
+        .status(500)
+        .json({ message: "User already has a review for this spot" });
+    }
+    // Validate the input
+    if (!review || typeof review !== "string" || review.trim() === "") {
+      errors.review = "Review text is required";
+    }
+    if (!stars || !Number.isInteger(stars) || stars < 1 || stars > 5) {
+      errors.stars = "Stars must be an integer from 1 to 5";
+    }
+    if (Object.keys(errors).length > 0) {
+      return res.status(400).json({
+        message: "Bad Request",
+        errors,
+      });
+    }
+
+    // Check if the spot exists
+    const spot = await Spot.findByPk(spotId);
+    if (!spot) {
+      return res.status(404).json({
+        message: "Spot couldn't be found",
+      });
+    }
+
+    // Create a new review
+    const newReview = await Review.create({
+      userId,
+      spotId,
+      review,
+      stars,
+    });
+
+    // Return the newly created review
+    return res.status(201).json({
+      id: newReview.id,
+      userId: newReview.userId,
+      spotId: newReview.spotId,
+      review: newReview.review,
+      stars: newReview.stars,
+      createdAt: newReview.createdAt,
+      updatedAt: newReview.updatedAt,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: "Server Error",
+      error: error.message, // For debugging, but avoid sending this in production
+    });
+  }
+});
+
 // GET all Spots owned by the Current User
 router.get("/current", requireAuth, async (req, res) => {
   const userId = req.user.id;
@@ -143,4 +210,8 @@ router.delete("/:spotId", requireAuth, async (req, res) => {
 });
 
 // Exports
+
+// ***** EXPORTS *****/
+
 module.exports = router;
+//hello
