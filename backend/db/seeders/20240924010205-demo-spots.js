@@ -1,4 +1,4 @@
-// backend/db/seeders/####-demo-spots.js
+// backend/db/seeders/20240924010205-demo-spots
 "use strict";
 
 let options = {};
