@@ -9,8 +9,7 @@ if (process.env.NODE_ENV === "production") {
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    options.tableName = "SpotImages";
-    await queryInterface.bulkInsert(options, [
+    await SpotImage.bulkCreate([
       {
         spotId: 1,
         url: "https://cdn.prod.website-files.com/5dcc7f8c449e597ed83356b8/5faae1191b673c881b077e1f_ogaa-min.png",
@@ -42,14 +41,11 @@ module.exports = {
         preview: false,
       },
     ]);
+    options;
   },
 
   async down(queryInterface, Sequelize) {
-    /**
-     * Add commands to revert seed here.
-     *
-     * Example:
-     * await queryInterface.bulkDelete('People', null, {});
-     */
+    options.tableName = "SpotImages";
+    await queryInterface.dropTable(options);
   },
 };
