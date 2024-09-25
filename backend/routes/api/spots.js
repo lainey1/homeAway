@@ -5,6 +5,8 @@ const { SpotImage } = require("../../db/models");
 const { check } = require("express-validator");
 const { handleValidationErrors } = require("../../utils/validation");
 const { requireAuth } = require("../../utils/auth");
+const { Review, User, ReviewImage } = require("../../db/models");
+
 
 const router = express.Router();
 
@@ -166,6 +168,38 @@ router.post("/:spotId/reviews", requireAuth, async (req, res) => {
       error: error.message, // For debugging, but avoid sending this in production
     });
   }
+});
+
+// GET all reviews for a spot
+// GET all reviews for a spot
+router.get("/:spotId/reviews", async (req, res) => {
+  const { spotId } = req.params;
+
+  // Check if the spot exists
+  const spot = await Spot.findByPk(spotId);
+  if (!spot) {
+    return res.status(404).json({
+      message: "Spot couldn't be found",
+    });
+  }
+
+  // Fetch reviews for the spot, include associated User and ReviewImages
+  const reviews = await Review.findAll({
+    where: { spotId },
+    include: [
+      {
+        model: User,
+        as: 'user', // Use the alias defined in the association
+        attributes: ['id', 'firstName', 'lastName'],
+      },
+      {
+        model: ReviewImage,
+        attributes: ['id', 'url'],
+      },
+    ],
+  });
+
+  return res.status(200).json({ Reviews: reviews });
 });
 
 // GET all Spots owned by the Current User
