@@ -41,15 +41,15 @@ router.post("/:spotId/images", requireAuth, async (req, res) => {
   console.log(req.params);
   const spot = await Spot.findByPk(spotId); // find spot by ID
 
-  // // Check if the spot exists
-  // if (!spot) {
-  //   return res.status(404).json({
-  //     message: "Spot not found",
-  //     errors: {
-  //       spotId: "Spot couldn't be found",
-  //     },
-  //   });
-  // }
+  // Check if the spot exists
+  if (!spot) {
+    return res.status(404).json({
+      message: "Spot not found",
+      errors: {
+        spotId: "Spot couldn't be found",
+      },
+    });
+  }
   const { url, preview } = req.body;
 
   // Create the image for spot
@@ -59,7 +59,15 @@ router.post("/:spotId/images", requireAuth, async (req, res) => {
     preview,
   });
 
-  return res.status(201).json(image);
+  // Create a response object without createdAt and updatedAt
+  const response = {
+    id: image.id,
+    spotId: image.spotId,
+    url: image.url,
+    preview: image.preview,
+  };
+
+  return res.status(201).json(response);
 });
 
 // Create a new spot
