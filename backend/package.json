@@ -13,7 +13,7 @@
     "build": "node psql-setup-script.js"
   },
   "keywords": [],
-  "author": "Lainey Paddock & Winston Riley",
+  "author": "Lainey Paddock, Winston Riley & Liudmila Umeslakkht",
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
