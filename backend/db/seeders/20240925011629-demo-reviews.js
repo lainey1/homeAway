@@ -1,6 +1,7 @@
 // backend/db/seeders/20240925011629-demo-reviews
-
 "use strict";
+
+const { Review } = require("../models");
 
 let options = {};
 if (process.env.NODE_ENV === "production") {
@@ -10,8 +11,7 @@ if (process.env.NODE_ENV === "production") {
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    options.tableName = "Reviews";
-    await queryInterface.bulkInsert("Reviews", [
+    await Review.bulkCreate([
       {
         spotId: 1,
         userId: 1,
@@ -43,6 +43,7 @@ module.exports = {
         stars: 5,
       },
     ]);
+    options;
   },
 
   async down(queryInterface, Sequelize) {
