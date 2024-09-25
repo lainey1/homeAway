@@ -1,4 +1,4 @@
-// backend/db/seeders/####-demo-user.js
+// backend/db/seeders/20240921024532-demo-user.js
 "use strict";
 
 const { User } = require("../models");
