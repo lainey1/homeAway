@@ -38,6 +38,7 @@ const validateSpot = [
 // Add an Image to a Spot based on the Spot's id
 router.post("/:spotId/images", requireAuth, async (req, res) => {
   const { spotId } = req.params; // from URL
+  const userId = req.user.id; // Get the current user's ID from authentication
   console.log(req.params);
   const spot = await Spot.findByPk(spotId); // find spot by ID
 
@@ -48,6 +49,14 @@ router.post("/:spotId/images", requireAuth, async (req, res) => {
       errors: {
         spotId: "Spot couldn't be found",
       },
+    });
+  }
+
+  // Check if the authenticated user is the owner of the spot
+  if (spot.ownerId !== userId) {
+    return res.status(403).json({
+      title: "Forbidden",
+      message: "Only the owner can add images to this spot.",
     });
   }
   const { url, preview } = req.body;
