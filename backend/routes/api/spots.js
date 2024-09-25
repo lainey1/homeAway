@@ -1,6 +1,7 @@
 // backend/routes/api/spots.js
 const express = require("express");
 const { Spot } = require("../../db/models");
+const { SpotImage } = require("../../db/models");
 const { check } = require("express-validator");
 const { handleValidationErrors } = require("../../utils/validation");
 const { requireAuth } = require("../../utils/auth");
@@ -34,94 +35,34 @@ const validateSpot = [
   handleValidationErrors,
 ];
 
-<<<<<<< HEAD
-// Create a new spot
-=======
-//* GET details of a Spot by ID
-router.get("/:spotId", async (req, res) => {
-  const { spotId } = req.params; // GET from URL
-  console.log(spotId);
+// Add an Image to a Spot based on the Spot's id
+router.post("/:spotId/images", requireAuth, async (req, res) => {
+  const { spotId } = req.params; // from URL
+  console.log(req.params);
+  const spot = await Spot.findByPk(spotId); // find spot by ID
 
-  const spot = await Spot.findByPk(spotId); // Find spot by ID;
+  // // Check if the spot exists
+  // if (!spot) {
+  //   return res.status(404).json({
+  //     message: "Spot not found",
+  //     errors: {
+  //       spotId: "Spot couldn't be found",
+  //     },
+  //   });
+  // }
+  const { url, preview } = req.body;
 
-  // Check if the spot exists
-  if (!spot) {
-    return res.status(404).json({
-      message: "Spot not found",
-      errors: {
-        spotId: "Spot couldn't be found",
-      },
-    });
-  }
-
-  return res.status(200).json(spot);
-});
-
-//* Edit a Spot
-router.put("/:spotId", requireAuth, validateSpot, async (req, res) => {
-  const userId = req.user.id; // GET authenticated userId
-  const { spotId } = req.params; // GET from URL
-  const { address, city, state, country, lat, lng, name, description, price } =
-    req.body;
-
-  const spot = await Spot.findByPk(spotId); // Find spot by ID;
-
-  // Check if the spot exists
-  if (!spot) {
-    return res.status(404).json({
-      message: "Spot not found",
-      errors: {
-        spotId: "Spot couldn't be found",
-      },
-    });
-  }
-
-  // Check if the authenticated user is the spot's owner
-  if (spot.ownerId !== userId) {
-    return res.status(200).json({
-      message: "Forbidden",
-      errors: {
-        authorization: "Only the owner can edit this spot",
-      },
-    });
-  }
-
-  //Update the spot with new details
-  spot.address = address;
-  spot.city = city;
-  spot.state = state;
-  spot.country = country;
-  spot.lat = lat;
-  spot.lng = lng;
-  spot.name = name;
-  spot.description = description;
-  spot.price = price;
-
-  await spot.save(); // save the updated spot
-
-  // response with updated spot
-  return res.status(200).json(spot);
-});
-
-//* GET all Spots owned by the Current User
-router.get("/current", requireAuth, async (req, res) => {
-  const userId = req.user.id;
-  const spots = await Spot.findAll({
-    where: {
-      ownerId: userId,
-    },
+  // Create the image for spot
+  const image = await SpotImage.create({
+    spotId: spot.id, //!FIX Need to associate the image with the spot
+    url,
+    preview,
   });
-  return res.json({ spots });
+
+  return res.status(201).json(image);
 });
 
-//* GET all Spots
-router.get("/", async (req, res) => {
-  const spots = await Spot.findAll();
-  return res.json(spots);
-});
-
-//* Create a new spot
->>>>>>> 6a1f3a2e6c53b3781570eb68ad27b3b67c94ae4f
+// Create a new spot
 router.post("/", validateSpot, async (req, res) => {
   const { address, city, state, country, lat, lng, name, description, price } =
     req.body;
@@ -143,7 +84,6 @@ router.post("/", validateSpot, async (req, res) => {
   return res.status(201).json(spot);
 });
 
-<<<<<<< HEAD
 // GET all Spots owned by the Current User
 router.get("/current", requireAuth, async (req, res) => {
   const userId = req.user.id;
@@ -163,8 +103,8 @@ router.get("/", async (req, res) => {
 
 // DELETE a Spot by ID
 router.delete("/:spotId", requireAuth, async (req, res) => {
-  const { spotId } = req.params;  // Extract spotId from route parameters
-  const userId = req.user.id;     // Get the current user's ID from authentication
+  const { spotId } = req.params; // Extract spotId from route parameters
+  const userId = req.user.id; // Get the current user's ID from authentication
 
   // Find the spot by ID
   const spot = await Spot.findByPk(spotId);
@@ -194,9 +134,5 @@ router.delete("/:spotId", requireAuth, async (req, res) => {
   });
 });
 
-
 // Exports
-=======
-// ***** EXPORTS *****/
->>>>>>> 6a1f3a2e6c53b3781570eb68ad27b3b67c94ae4f
 module.exports = router;
