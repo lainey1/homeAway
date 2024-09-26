@@ -215,8 +215,7 @@ router.post("/:spotId/reviews", requireAuth, async (req, res) => {
   }
 });
 
-// GET all reviews for a spot
-// GET all reviews for a spot
+//* GET all reviews for a spot
 router.get("/:spotId/reviews", async (req, res) => {
   const { spotId } = req.params;
 
@@ -247,7 +246,7 @@ router.get("/:spotId/reviews", async (req, res) => {
   return res.status(200).json({ Reviews: reviews });
 });
 
-// GET all Spots owned by the Current User
+//* GET all Spots owned by the Current User
 router.get("/current", requireAuth, async (req, res) => {
   const userId = req.user.id;
   const spots = await Spot.findAll({
