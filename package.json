@@ -13,5 +13,9 @@
   },
   "keywords": [],
   "author": "Lainey Paddock & Winston Riley",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "sequelize": "^6.37.3",
+    "sequelize-cli": "^6.6.2"
+  }
 }
