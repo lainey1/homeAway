@@ -1,11 +1,16 @@
 {
-"address": "25 Old South Rd",
-"city": "Nantucket",
-"state": "Massachusetts",
+"address": "456 Maple Street",
+"city": "Santa Cruz",
+"state": "California",
 "country": "United States of America",
-"lat": 41.2835,
-"lng": 70.0994,
-"name": "Cozy Cottage Retreat",
-"description": "Welcome to the Cozy Cottage Retreat, your charming getaway in nature. This inviting cottage features a warm living area with a fireplace and a fully equipped kitchen for delightful meals. Enjoy serene views from the spacious deck or relax by the fire pit under the stars. With two comfortable bedrooms and easy access to hiking trails, this is the perfect spot to unwind and create lasting memories. Your cozy escape awaits!",
-"price": 205
+"lat": 36.974117,
+"lng": -89.030796,
+"name": "Cozy Cottage",
+"description": "A charming getaway nestled in the woods, perfect for relaxation.",
+"price": 150
+}
+
+{
+"url": "https://lifeonshadylane.com/wp-content/uploads/2017/04/5afaf69ab3518909fe575fe8de3d7f3d.jpg",
+"preview": true
 }
