@@ -7,7 +7,6 @@ const { handleValidationErrors } = require("../../utils/validation");
 const { requireAuth } = require("../../utils/auth");
 const { Review, User, ReviewImage } = require("../../db/models");
 
-
 const router = express.Router();
 
 // Validation for creating and updating spots
@@ -79,6 +78,52 @@ router.post("/:spotId/images", requireAuth, async (req, res) => {
   };
 
   return res.status(201).json(response);
+});
+
+//* Edit a Spot
+router.put("/:spotId", requireAuth, validateSpot, async (req, res) => {
+  const userId = req.user.id; // GET authenticated userId
+  const { spotId } = req.params; // GET from URL
+  const { address, city, state, country, lat, lng, name, description, price } =
+    req.body;
+
+  const spot = await Spot.findByPk(spotId); // Find spot by ID;
+
+  // Check if the spot exists
+  if (!spot) {
+    return res.status(404).json({
+      message: "Spot not found",
+      errors: {
+        spotId: "Spot couldn't be found",
+      },
+    });
+  }
+
+  // Check if the authenticated user is the spot's owner
+  if (spot.ownerId !== userId) {
+    return res.status(200).json({
+      message: "Forbidden",
+      errors: {
+        authorization: "Only the owner can edit this spot",
+      },
+    });
+  }
+
+  //Update the spot with new details
+  spot.address = address;
+  spot.city = city;
+  spot.state = state;
+  spot.country = country;
+  spot.lat = lat;
+  spot.lng = lng;
+  spot.name = name;
+  spot.description = description;
+  spot.price = price;
+
+  await spot.save(); // save the updated spot
+
+  // response with updated spot
+  return res.status(200).json(spot);
 });
 
 // Create a new spot
@@ -189,12 +234,12 @@ router.get("/:spotId/reviews", async (req, res) => {
     include: [
       {
         model: User,
-        as: 'user', // Use the alias defined in the association
-        attributes: ['id', 'firstName', 'lastName'],
+        as: "user", // Use the alias defined in the association
+        attributes: ["id", "firstName", "lastName"],
       },
       {
         model: ReviewImage,
-        attributes: ['id', 'url'],
+        attributes: ["id", "url"],
       },
     ],
   });
