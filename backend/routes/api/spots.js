@@ -6,6 +6,7 @@ const { check } = require("express-validator");
 const { handleValidationErrors } = require("../../utils/validation");
 const { requireAuth } = require("../../utils/auth");
 const { Review, User, ReviewImage } = require("../../db/models");
+const { Op, fn, col } = require("sequelize"); // Import Sequelize functions
 
 const router = express.Router();
 
@@ -83,7 +84,7 @@ router.post("/:spotId/images", requireAuth, async (req, res) => {
 //* GET details of a Spot by ID
 router.get("/:spotId", async (req, res) => {
   const { spotId } = req.params; // GET from URL
-  console.log(spotId);
+  // console.log(spotId);
 
   const spot = await Spot.findByPk(spotId, {
     // Find spot by ID;
@@ -97,6 +98,16 @@ router.get("/:spotId", async (req, res) => {
         model: User,
         as: "Owner",
         attributes: ["id", "firstName", "lastName"],
+      },
+
+      // EXAMPLE: Model.findAll({ attributes: ['foo', [sequelize.fn('COUNT', sequelize.col('hats')), 'n_hats'], 'bar'], });
+      {
+        model: Review,
+        attributes: [
+          [fn("COUNT", col("Reviews.id")), "reviewCount"],
+          [fn("AVG", col("stars")), "averageRating"],
+        ],
+        required: false,
       },
     ],
   });
