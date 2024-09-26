@@ -152,6 +152,7 @@ router.post("/:spotId/reviews", requireAuth, async (req, res) => {
     const { spotId } = req.params;
     const userId = req.user.id;
 
+    console.log("Review content:", review);
       // Check if the user has already submitted a review for this spot
     const errors = {};   
     const existingReview = await Review.findOne({
@@ -262,7 +263,6 @@ router.delete("/:spotId", requireAuth, async (req, res) => {
 });
 
 
-// Exports
 
 // ***** EXPORTS *****/
 

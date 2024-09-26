@@ -36,12 +36,13 @@ module.exports = {
         reviewId: 6,
         url: "https://cdn.prod.website-files.com/5dcc7f8c449e597ed83356b8/5faae1191b673c881b077e1f_ogaa-min.png",
       },
-    ]);
-    options;
+    ], options);
+    
   },
 
   async down(queryInterface, Sequelize) {
     options.tableName = "ReviewImages";
-    await queryInterface.dropTable(options);
+    // await queryInterface.dropTable(options);
+    return queryInterface.bulkDelete(options, null, {}); 
   },
 };
