@@ -42,12 +42,13 @@ module.exports = {
         review: "Best stay ever! Highly recommend.",
         stars: 5,
       },
-    ]);
-    options;
+    ], options);
+    
   },
 
   async down(queryInterface, Sequelize) {
     options.tableName = "Reviews";
-    await queryInterface.dropTable(options);
+    // await queryInterface.dropTable(options);
+    return queryInterface.bulkDelete(options, null, {});
   },
 };

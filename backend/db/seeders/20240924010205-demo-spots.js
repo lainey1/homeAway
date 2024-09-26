@@ -55,15 +55,11 @@ module.exports = {
         avgRating: 4.7,
         previewImage: "learn-hub-image-url",
       },
-    ]);
+    ], options);
   },
 
   async down(queryInterface, Sequelize) {
-    /**
-     * Add commands to revert seed here.
-     *
-     * Example:
-     * await queryInterface.bulkDelete('People', null, {});
-     */
+    options.tableName = 'Spots';
+    return queryInterface.bulkDelete(options, null, {}); 
   },
 };
