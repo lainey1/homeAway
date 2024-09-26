@@ -84,11 +84,17 @@ router.post("/:spotId/images", requireAuth, async (req, res) => {
 //* GET details of a Spot by ID
 router.get("/:spotId", async (req, res) => {
   const { spotId } = req.params; // GET from URL
-  // console.log(spotId);
 
   const spot = await Spot.findByPk(spotId, {
-    // Find spot by ID;
     include: [
+      {
+        model: Review,
+        attributes: [
+          [fn("COUNT", col("Reviews.id")), "reviewCount" || 0],
+          [fn("AVG", col("stars")), "avgStarRating" || 0],
+        ],
+        required: false,
+      },
       {
         model: SpotImage,
         as: "SpotImages",
@@ -99,19 +105,9 @@ router.get("/:spotId", async (req, res) => {
         as: "Owner",
         attributes: ["id", "firstName", "lastName"],
       },
-
-      // EXAMPLE: Model.findAll({ attributes: ['foo', [sequelize.fn('COUNT', sequelize.col('hats')), 'n_hats'], 'bar'], });
-      {
-        model: Review,
-        attributes: [
-          [fn("COUNT", col("Reviews.id")), "reviewCount"],
-          [fn("AVG", col("stars")), "averageRating"],
-        ],
-        required: false,
-      },
     ],
+    group: ["Spot.id", "Owner.id", "SpotImages.id"], // Group by spot ID to aggregate correctly
   });
-  console.log(spot);
 
   // Check if the spot exists
   if (!spot) {
@@ -123,7 +119,15 @@ router.get("/:spotId", async (req, res) => {
     });
   }
 
-  return res.status(200).json(spot);
+  // Prepare response object
+  const { previewImage, ...spotDetails } = spot.toJSON();
+
+  // If reviews are included, merge their results into the response
+  const reviews = spot.Reviews[0] || {}; // Get first review if it exists
+  spotDetails.numReviews = reviews.reviewCount || 0;
+  spotDetails.avgStarRating = reviews.avgStarRating || 0;
+
+  return res.status(200).json(spotDetails);
 });
 
 //* Edit a Spot
@@ -307,6 +311,7 @@ router.get("/current", requireAuth, async (req, res) => {
 //* GET all Spots
 router.get("/", async (req, res) => {
   const spots = await Spot.findAll();
+
   return res.json(spots);
 });
 
