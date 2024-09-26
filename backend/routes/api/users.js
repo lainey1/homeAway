@@ -11,6 +11,7 @@ const router = express.Router();
 const { check } = require("express-validator");
 const { handleValidationErrors } = require("../../utils/validation");
 
+
 //* Signup validation middleware
 const validateSignup = [
   check("email")
