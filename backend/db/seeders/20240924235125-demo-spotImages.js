@@ -42,12 +42,13 @@ module.exports = {
         url: "https://www.computerworld.com/wp-content/uploads/2024/03/programming_coding_elements_lines_of_code_development_developers_teamwork_by_dean_mitchell_gettyimages-1055056840_2400x1600-100795791-orig-100918079-orig.jpg",
         preview: false,
       },
-    ]);
-    options;
+    ], options);
+   
   },
 
   async down(queryInterface, Sequelize) {
     options.tableName = "SpotImages";
-    await queryInterface.dropTable(options);
+    // await queryInterface.dropTable(options);
+    return queryInterface.bulkDelete(options, null, {});  
   },
 };
