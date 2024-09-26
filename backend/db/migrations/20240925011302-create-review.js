@@ -73,6 +73,6 @@ module.exports = {
   // },
   //! TESTING BELOW
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("SpotImages", options);
+    await queryInterface.dropTable("Reviews", options);
   },
 };
