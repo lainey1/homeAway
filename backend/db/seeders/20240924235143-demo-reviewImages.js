@@ -11,38 +11,44 @@ if (process.env.NODE_ENV === "production") {
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await ReviewImage.bulkCreate([
-      {
-        reviewId: 1,
-        url: "https://cdn.prod.website-files.com/5dcc7f8c449e597ed83356b8/5faae1191b673c881b077e1f_ogaa-min.png",
-      },
-      {
-        reviewId: 2,
-        url: "https://cdn.prod.website-files.com/5dcc7f8c449e597ed83356b8/5faae1191b673c881b077e1f_ogaa-min.png",
-      },
-      {
-        reviewId: 3,
-        url: "https://cdn.prod.website-files.com/5dcc7f8c449e597ed83356b8/5faae1191b673c881b077e1f_ogaa-min.png",
-      },
-      {
-        reviewId: 4,
-        url: "https://cdn.prod.website-files.com/5dcc7f8c449e597ed83356b8/5faae1191b673c881b077e1f_ogaa-min.png",
-      },
-      {
-        reviewId: 5,
-        url: "https://cdn.prod.website-files.com/5dcc7f8c449e597ed83356b8/5faae1191b673c881b077e1f_ogaa-min.png",
-      },
-      {
-        reviewId: 6,
-        url: "https://cdn.prod.website-files.com/5dcc7f8c449e597ed83356b8/5faae1191b673c881b077e1f_ogaa-min.png",
-      },
-    ], options);
-    
+    await ReviewImage.bulkCreate(
+      [
+        {
+          reviewId: 1,
+          url: "https://cdn.prod.website-files.com/5dcc7f8c449e597ed83356b8/5faae1191b673c881b077e1f_ogaa-min.png",
+        },
+        {
+          reviewId: 2,
+          url: "https://cdn.prod.website-files.com/5dcc7f8c449e597ed83356b8/5faae1191b673c881b077e1f_ogaa-min.png",
+        },
+        {
+          reviewId: 3,
+          url: "https://cdn.prod.website-files.com/5dcc7f8c449e597ed83356b8/5faae1191b673c881b077e1f_ogaa-min.png",
+        },
+        {
+          reviewId: 4,
+          url: "https://cdn.prod.website-files.com/5dcc7f8c449e597ed83356b8/5faae1191b673c881b077e1f_ogaa-min.png",
+        },
+        {
+          reviewId: 5,
+          url: "https://cdn.prod.website-files.com/5dcc7f8c449e597ed83356b8/5faae1191b673c881b077e1f_ogaa-min.png",
+        },
+        {
+          reviewId: 6,
+          url: "https://cdn.prod.website-files.com/5dcc7f8c449e597ed83356b8/5faae1191b673c881b077e1f_ogaa-min.png",
+        },
+      ],
+      options
+    );
   },
 
+  // async down(queryInterface, Sequelize) {
+  //   options.tableName = "ReviewImages";
+  //   // await queryInterface.dropTable(options);
+  //   return queryInterface.bulkDelete(options, null, {});
+  // },
+  //! TESTING BELOW
   async down(queryInterface, Sequelize) {
-    options.tableName = "ReviewImages";
-    // await queryInterface.dropTable(options);
-    return queryInterface.bulkDelete(options, null, {}); 
+    return queryInterface.bulkDelete("ReviewImages", null, options);
   },
 };
