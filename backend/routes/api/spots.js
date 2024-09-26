@@ -9,7 +9,7 @@ const { Review, User, ReviewImage } = require("../../db/models");
 
 const router = express.Router();
 
-// Validation for creating and updating spots
+//* Validation for creating and updating spots
 const validateSpot = [
   check("address")
     .exists({ checkFalsy: true })
@@ -36,7 +36,7 @@ const validateSpot = [
   handleValidationErrors,
 ];
 
-// Add an Image to a Spot based on the Spot's id
+//* Add an Image to a Spot based on the Spot's id
 router.post("/:spotId/images", requireAuth, async (req, res) => {
   const { spotId } = req.params; // from URL
   const userId = req.user.id; // Get the current user's ID from authentication
@@ -78,6 +78,41 @@ router.post("/:spotId/images", requireAuth, async (req, res) => {
   };
 
   return res.status(201).json(response);
+});
+
+//* GET details of a Spot by ID
+router.get("/:spotId", async (req, res) => {
+  const { spotId } = req.params; // GET from URL
+  console.log(spotId);
+
+  const spot = await Spot.findByPk(spotId, {
+    // Find spot by ID;
+    include: [
+      {
+        model: SpotImage,
+        as: "SpotImages",
+        attributes: ["id", "url", "preview"],
+      },
+      {
+        model: User,
+        as: "Owner",
+        attributes: ["id", "firstName", "lastName"],
+      },
+    ],
+  });
+  console.log(spot);
+
+  // Check if the spot exists
+  if (!spot) {
+    return res.status(404).json({
+      message: "Spot not found",
+      errors: {
+        spotId: "Spot couldn't be found",
+      },
+    });
+  }
+
+  return res.status(200).json(spot);
 });
 
 //* Edit a Spot
@@ -258,7 +293,7 @@ router.get("/current", requireAuth, async (req, res) => {
   return res.json({ spots });
 });
 
-// GET all Spots
+//* GET all Spots
 router.get("/", async (req, res) => {
   const spots = await Spot.findAll();
   return res.json(spots);
