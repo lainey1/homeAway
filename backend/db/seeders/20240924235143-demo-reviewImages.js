@@ -47,8 +47,8 @@ module.exports = {
   //   // await queryInterface.dropTable(options);
   //   return queryInterface.bulkDelete(options, null, {});
   // },
-  //! TESTING BELOW
   async down(queryInterface, Sequelize) {
-    return queryInterface.bulkDelete("ReviewImages", null, options);
+    options.tableName = "ReviewImages";
+    return queryInterface.bulkDelete(options, null, {});
   },
 };
