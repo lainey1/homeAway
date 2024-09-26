@@ -45,4 +45,9 @@ module.exports = {
     options.tableName = "ReviewImages";
     await queryInterface.dropTable(options);
   },
+
+  // //! TESTING BELOW
+  // async down(queryInterface, Sequelize) {
+  //   await queryInterface.dropTable("ReviewImages", options);
+  // },
 };

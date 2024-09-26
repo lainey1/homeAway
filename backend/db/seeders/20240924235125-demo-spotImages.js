@@ -47,10 +47,19 @@ module.exports = {
       options
     );
   },
+  // async down(queryInterface, Sequelize) {
+  //   options.tableName = "SpotImages";
+  //   // await queryInterface.dropTable(options);
+  //   return queryInterface.bulkDelete(options, null, {});
+  // },
+
+  // //! TESTING BELOW
+  // async down(queryInterface, Sequelize) {
+  //   return queryInterface.bulkDelete("SpotImages", null, options);
+  // },
 
   async down(queryInterface, Sequelize) {
     options.tableName = "SpotImages";
-    // await queryInterface.dropTable(options);
     return queryInterface.bulkDelete(options, null, {});
   },
 };
