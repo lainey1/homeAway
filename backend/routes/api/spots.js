@@ -126,7 +126,7 @@ router.put("/:spotId", requireAuth, validateSpot, async (req, res) => {
   return res.status(200).json(spot);
 });
 
-// Create a new spot
+//* Create a new spot
 router.post("/", validateSpot, async (req, res) => {
   const { address, city, state, country, lat, lng, name, description, price } =
     req.body;
@@ -233,11 +233,12 @@ router.get("/:spotId/reviews", async (req, res) => {
     include: [
       {
         model: User,
-        as: "user", // Use the alias defined in the association
+        as: "User", // Use the alias defined in the association
         attributes: ["id", "firstName", "lastName"],
       },
       {
         model: ReviewImage,
+        as: "ReviewImages",
         attributes: ["id", "url"],
       },
     ],

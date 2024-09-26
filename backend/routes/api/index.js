@@ -17,15 +17,13 @@ router.use("/session", sessionRouter);
 
 router.use("/users", usersRouter);
 
-
-
 router.use("/spots", spotRouter);
 
 router.use("/spot-images", spotImagesRouter);
 
 router.use("/bookings", bookingsRouter);
 
-router.use("/reviews", reviewRouter);
+router.use("/reviews", reviewsRouter);
 
 router.post("/test", (req, res) => {
   res.json({ requestBody: req.body });
