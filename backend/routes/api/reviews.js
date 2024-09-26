@@ -146,9 +146,6 @@ router.delete("/:reviewId", requireAuth, async (req, res) => {
   });
 });
 
-// ***** EXPORTS *****/
-module.exports = router;
-
 //* GET all reviews by the Current User
 router.get("/current", requireAuth, async (req, res) => {
   const userId = req.user.id;
@@ -193,4 +190,5 @@ router.get("/current", requireAuth, async (req, res) => {
   return res.json({ Reviews: reviews }); // Wrap the reviews in an object
 });
 
+// ***** EXPORTS *****/
 module.exports = router;
