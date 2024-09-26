@@ -53,6 +53,7 @@ module.exports = {
   //   return queryInterface.bulkDelete(options, null, {});
   // },
 
+  //! TESTING BELOW
   async down(queryInterface, Sequelize) {
     return queryInterface.bulkDelete("SpotImages", null, options);
   },
