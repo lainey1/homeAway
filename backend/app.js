@@ -7,6 +7,7 @@ const cors = require("cors");
 const csurf = require("csurf");
 const helmet = require("helmet");
 const cookieParser = require("cookie-parser");
+const reviewImagesRouter = require('./routes/api/review-images');
 
 const { environment } = require("./config");
 const isProduction = environment === "production";
@@ -54,6 +55,7 @@ app.use(
 //* Add routes to the Express application by importing with the other imports
 
 app.use(routes); // Connect all the routes
+app.use('/api/review-images', reviewImagesRouter);
 
 //* Catch unhandled requests and forward to error handler.
 app.use((_req, _res, next) => {

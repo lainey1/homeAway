@@ -6,10 +6,11 @@ const { check } = require("express-validator");
 const { handleValidationErrors } = require("../../utils/validation");
 const { requireAuth } = require("../../utils/auth");
 const { Review, User, ReviewImage } = require("../../db/models");
+const { Op, fn, col } = require("sequelize"); // Import Sequelize functions
 
 const router = express.Router();
 
-// Validation for creating and updating spots
+//* Validation for creating and updating spots
 const validateSpot = [
   check("address")
     .exists({ checkFalsy: true })
@@ -36,7 +37,7 @@ const validateSpot = [
   handleValidationErrors,
 ];
 
-// Add an Image to a Spot based on the Spot's id
+//* Add an Image to a Spot based on the Spot's id
 router.post("/:spotId/images", requireAuth, async (req, res) => {
   const { spotId } = req.params; // from URL
   const userId = req.user.id; // Get the current user's ID from authentication
@@ -78,6 +79,55 @@ router.post("/:spotId/images", requireAuth, async (req, res) => {
   };
 
   return res.status(201).json(response);
+});
+
+//* GET details of a Spot by ID
+router.get("/:spotId", async (req, res) => {
+  const { spotId } = req.params; // GET from URL
+
+  const spot = await Spot.findByPk(spotId, {
+    include: [
+      {
+        model: Review,
+        attributes: [
+          [fn("COUNT", col("Reviews.id")), "reviewCount" || 0],
+          [fn("AVG", col("stars")), "avgStarRating" || 0],
+        ],
+        required: false,
+      },
+      {
+        model: SpotImage,
+        as: "SpotImages",
+        attributes: ["id", "url", "preview"],
+      },
+      {
+        model: User,
+        as: "Owner",
+        attributes: ["id", "firstName", "lastName"],
+      },
+    ],
+    group: ["Spot.id", "Owner.id", "SpotImages.id"], // Group by spot ID to aggregate correctly
+  });
+
+  // Check if the spot exists
+  if (!spot) {
+    return res.status(404).json({
+      message: "Spot not found",
+      errors: {
+        spotId: "Spot couldn't be found",
+      },
+    });
+  }
+
+  // Prepare response object
+  const { previewImage, ...spotDetails } = spot.toJSON();
+
+  // If reviews are included, merge their results into the response
+  const reviews = spot.Reviews[0] || {}; // Get first review if it exists
+  spotDetails.numReviews = reviews.reviewCount || 0;
+  spotDetails.avgStarRating = reviews.avgStarRating || 0;
+
+  return res.status(200).json(spotDetails);
 });
 
 //* Edit a Spot
@@ -258,9 +308,10 @@ router.get("/current", requireAuth, async (req, res) => {
   return res.json({ spots });
 });
 
-// GET all Spots
+//* GET all Spots
 router.get("/", async (req, res) => {
   const spots = await Spot.findAll();
+
   return res.json(spots);
 });
 
