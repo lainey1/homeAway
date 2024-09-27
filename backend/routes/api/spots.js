@@ -587,7 +587,7 @@ router.get("/", validateQueryParams, async (req, res) => {
         lng: spot.lng,
         name: spot.name,
         description: spot.description,
-        price: spot.price,
+        price: Number(spot.price.toFixed(2)),
         createdAt: spot.createdAt,
         updatedAt: spot.updatedAt,
         avgRating: spot.dataValues.avgStarRating
