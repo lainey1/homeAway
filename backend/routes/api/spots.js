@@ -587,7 +587,7 @@ router.get("/", validateQueryParams, async (req, res) => {
         lng: spot.lng,
         name: spot.name,
         description: spot.description,
-        price: Number(spot.price.toFixed(2)),
+        price: Number(spot.price), // Ensure price is a number
         createdAt: spot.createdAt,
         updatedAt: spot.updatedAt,
         avgRating: spot.dataValues.avgStarRating
@@ -596,6 +596,7 @@ router.get("/", validateQueryParams, async (req, res) => {
         previewImage: spot.SpotImages.length ? spot.SpotImages[0].url : null,
       };
     });
+    console.log(formattedSpots.price);
 
     // Return the response with pagination info
     return res.json({
