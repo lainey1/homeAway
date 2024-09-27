@@ -564,7 +564,7 @@ router.get("/", validateQueryParams, async (req, res) => {
           required: false, // Allow spots with no images
         },
       ],
-      group: ["Spot.id"], // Grouping by Spot.id and SpotImages.id
+      group: ["Spot.id", "SpotImages.id"], // Grouping by Spot.id and SpotImages.id
       attributes: {
         include: [[fn("AVG", col("Reviews.stars")), "avgStarRating"]], // Calculate average star rating
       },
@@ -587,7 +587,7 @@ router.get("/", validateQueryParams, async (req, res) => {
         lng: spot.lng,
         name: spot.name,
         description: spot.description,
-        price: spot.price,
+        price: Number(spot.price.toFixed(2)),
         createdAt: spot.createdAt,
         updatedAt: spot.updatedAt,
         avgRating: spot.dataValues.avgStarRating
