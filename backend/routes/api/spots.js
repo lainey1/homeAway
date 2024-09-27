@@ -103,14 +103,15 @@ router.get("/:spotId", async (req, res) => {
         attributes: ["id", "firstName", "lastName"],
       },
     ],
-    // Group by required attributes
-    group: ["Spot.id", "Owner.id", "SpotImages.id"],
+   // Group by required attributes
+     group: ["Spot.id", "Owner.id", "SpotImages.id", "Reviews.id"], // Group by spot ID to aggregate correctly
     attributes: {
       include: [
         [fn("COUNT", col("Reviews.id")), "reviewCount"],
         [fn("AVG", col("Reviews.stars")), "avgStarRating"],
       ],
     },
+
   });
 
   // Check if the spot exists
