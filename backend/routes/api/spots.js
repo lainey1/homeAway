@@ -329,7 +329,7 @@ router.get("/current", requireAuth, async (req, res) => {
   return res.json({ spots });
 });
 
-//* GET all Spots
+//* GET all Spots v2
 router.get("/", async (req, res) => {
   const Spots = await Spot.findAll({
     include: [
