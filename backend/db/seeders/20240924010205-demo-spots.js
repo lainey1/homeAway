@@ -22,8 +22,8 @@ module.exports = {
         name: "App Academy",
         description: "Place where web developers are created",
         price: 123.0,
-        avgRating: 4.5,
-        previewImage: "image url",
+        // avgRating: 4.5,
+        // previewImage: "image url",
       },
       {
         ownerId: 2,
@@ -37,8 +37,8 @@ module.exports = {
         description:
           "Welcome to Serenity Haven, your peaceful retreat in the heart of nature.",
         price: 150.0,
-        avgRating: 4.8,
-        previewImage: "image url",
+        // avgRating: 4.8,
+        // previewImage: "image url",
       },
       {
         ownerId: 3,
@@ -52,8 +52,8 @@ module.exports = {
         description:
           "Experience the magic of nature in the Tranquil Treehouse, an enchanting escape perched among the treetops.",
         price: 200.0,
-        avgRating: 4.7,
-        previewImage: "learn-hub-image-url",
+        // avgRating: 4.7,
+        // previewImage: "learn-hub-image-url",
       },
     ], options);
   },
