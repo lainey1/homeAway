@@ -40,15 +40,17 @@ router.post("/", validateLogin, async (req, res, next) => {
   if (!user || !bcrypt.compareSync(password, user.hashedPassword.toString())) {
     const err = new Error("Login failed");
     err.status = 401;
-    err.title = "Login failed";
+    err.title = "Invalid credentials";
     err.errors = { credential: "The provided credentials were invalid." };
     return next(err);
   }
 
   const safeUser = {
     id: user.id,
-    email: user.email, // added
-    username: user.username, // added
+    firstName: user.firstName,
+    lastName: user.lastName,
+    email: user.email,
+    username: user.username,
   };
 
   await setTokenCookie(res, safeUser);
