@@ -16,6 +16,7 @@ module.exports = (sequelize, DataTypes) => {
       spotId: {
         type: DataTypes.INTEGER,
         allowNull: false,
+        onDelete: "CASCADE"
       },
       url: {
         type: DataTypes.STRING,

@@ -22,6 +22,7 @@ module.exports = {
           type: Sequelize.INTEGER,
           allowNull: false,
           unique: false,
+          onDelete: "CASCADE"
         },
         url: {
           type: Sequelize.STRING,
