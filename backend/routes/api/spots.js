@@ -89,10 +89,7 @@ router.get("/:spotId", async (req, res) => {
     include: [
       {
         model: Review,
-        attributes: [
-          [fn("COUNT", col("Reviews.id")), "reviewCount" || 0],
-          [fn("AVG", col("stars")), "avgStarRating" || 0],
-        ],
+        attributes: [],
         required: false,
       },
       {
@@ -106,7 +103,14 @@ router.get("/:spotId", async (req, res) => {
         attributes: ["id", "firstName", "lastName"],
       },
     ],
-    group: ["Spot.id", "Owner.id", "SpotImages.id"], // Group by spot ID to aggregate correctly
+    // Group by required attributes
+    group: ["Spot.id", "Owner.id", "SpotImages.id"],
+    attributes: {
+      include: [
+        [fn("COUNT", col("Reviews.id")), "reviewCount"],
+        [fn("AVG", col("Reviews.stars")), "avgStarRating"],
+      ],
+    },
   });
 
   // Check if the spot exists
@@ -120,14 +124,31 @@ router.get("/:spotId", async (req, res) => {
   }
 
   // Prepare response object
-  const { previewImage, ...spotDetails } = spot.toJSON();
+  const response = {
+    id: spot.id,
+    ownerId: spot.Owner.id,
+    address: spot.address,
+    city: spot.city,
+    state: spot.state,
+    country: spot.country,
+    lat: spot.lat,
+    lng: spot.lng,
+    name: spot.name,
+    description: spot.description,
+    price: spot.price,
+    createdAt: spot.createdAt,
+    updatedAt: spot.updatedAt,
+    reviewCount: spot.dataValues.reviewCount || 0, // Default to 0 if no reviews
+    avgStarRating: spot.dataValues.avgStarRating || 0, // Default to 0 if no ratings
+    SpotImages: spot.SpotImages, // Directly include the SpotImages
+    Owner: {
+      id: spot.Owner.id,
+      firstName: spot.Owner.firstName,
+      lastName: spot.Owner.lastName,
+    },
+  };
 
-  // If reviews are included, merge their results into the response
-  const reviews = spot.Reviews[0] || {}; // Get first review if it exists
-  spotDetails.numReviews = reviews.reviewCount || 0;
-  spotDetails.avgStarRating = reviews.avgStarRating || 0;
-
-  return res.status(200).json(spotDetails);
+  return res.status(200).json(response);
 });
 
 //* Edit a Spot
