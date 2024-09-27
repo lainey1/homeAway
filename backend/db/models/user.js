@@ -10,7 +10,10 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "ownerId",
       });
       User.hasMany(models.Review, {
-        foreignKey: 'userId'
+        foreignKey: "userId",
+      });
+      User.hasMany(models.Booking, {
+        foreignKey: "userId",
       });
     }
   }
