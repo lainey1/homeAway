@@ -560,13 +560,11 @@ router.get("/", validateQueryParams, async (req, res) => {
         {
           model: SpotImage,
           where: { preview: true }, // Only return preview images
-          attributes: [
-            [fn("ARRAY_AGG", col("SpotImages.url")), "previewImages"],
-          ],
+          attributes: ["url"],
           required: false, // Allow spots with no images
         },
       ],
-      group: ["Spot.id"], // Grouping by Spot.id and SpotImages.id
+      group: ["Spot.id", "SpotImages.id"], // Grouping by Spot.id and SpotImages.id
       attributes: {
         include: [[fn("AVG", col("Reviews.stars")), "avgStarRating"]], // Calculate average star rating
       },
