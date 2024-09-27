@@ -331,12 +331,31 @@ router.get("/current", requireAuth, async (req, res) => {
 
 //* GET all Spots
 router.get("/", async (req, res) => {
-  const Spots = await Spot.findAll();
+  const Spots = await Spot.findAll({
+    include: [
+      {
+        model: Review,
+        attributes: [],
+        required: false,
+      },
+      {
+        model: SpotImage,
+        as: "SpotImages",
+        attributes: [],
+      },
+    ],
+    // Group by required attributes
+    group: ["Spot.id", "SpotImages.id"],
+    attributes: {
+      include: [[fn("AVG", col("Reviews.stars")), "avgStarRating"]],
+      exclude: ["avgRating"],
+    },
+  });
 
   return res.json({ Spots });
 });
 
-// DELETE a Spot by ID
+//* DELETE a Spot by ID
 router.delete("/:spotId", requireAuth, async (req, res) => {
   const { spotId } = req.params; // Extract spotId from route parameters
   const userId = req.user.id; // Get the current user's ID from authentication
