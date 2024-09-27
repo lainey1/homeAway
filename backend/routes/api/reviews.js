@@ -1,6 +1,12 @@
 // backend/routes/api/reviews.js
 const express = require("express");
-const { Review, ReviewImage, Spot, User } = require("../../db/models");
+const {
+  Review,
+  ReviewImage,
+  Spot,
+  SpotImage,
+  User,
+} = require("../../db/models");
 const { check } = require("express-validator");
 const { handleValidationErrors } = require("../../utils/validation");
 const { requireAuth } = require("../../utils/auth");
@@ -176,7 +182,17 @@ router.get("/current", requireAuth, async (req, res) => {
           "lng",
           "name",
           "price",
-          "previewImage",
+          // "previewImage",
+        ],
+        include: [
+          //! FIXED bug
+          {
+            model: SpotImage,
+            as: "SpotImages",
+            where: { preview: true }, // Only return preview images
+            attributes: ["url"],
+            required: false,
+          },
         ],
       },
       {
@@ -184,10 +200,39 @@ router.get("/current", requireAuth, async (req, res) => {
         as: "ReviewImages",
         attributes: ["id", "url"],
       },
+      // ! Removed original
+      //{
+      //   model: SpotImage,
+      //   as: "SpotImages",
+      //   attributes: ["id", "url"],
+      // },
     ],
   });
 
-  return res.json({ Reviews: reviews }); // Wrap the reviews in an object
+  //! FIX: format the output to include preview image in the Spot object
+  const formattedReviews = reviews.map((review) => {
+    const spotImages = review.Spot.SpotImages;
+    const previewImage = spotImages.length > 0 ? spotImages[0].url : null;
+
+    return {
+      ...review.toJSON(),
+      Spot: {
+        id: review.Spot.id,
+        ownerId: review.Spot.ownerId,
+        address: review.Spot.address,
+        city: review.Spot.city,
+        state: review.Spot.state,
+        country: review.Spot.country,
+        lat: review.Spot.lat,
+        lng: review.Spot.lng,
+        name: review.Spot.name,
+        price: review.Spot.price,
+        previewImage, // Include the preview image in the response
+      },
+    };
+  });
+
+  return res.json({ Reviews: formattedReviews });
 });
 
 // ***** EXPORTS *****/
