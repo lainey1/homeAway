@@ -331,9 +331,9 @@ router.get("/current", requireAuth, async (req, res) => {
 
 //* GET all Spots
 router.get("/", async (req, res) => {
-  const spots = await Spot.findAll();
+  const Spots = await Spot.findAll();
 
-  return res.json(spots);
+  return res.json({ Spots });
 });
 
 // DELETE a Spot by ID
