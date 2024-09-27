@@ -560,7 +560,9 @@ router.get("/", validateQueryParams, async (req, res) => {
         {
           model: SpotImage,
           where: { preview: true }, // Only return preview images
-          attributes: ["url"],
+          attributes: [
+            [fn("ARRAY_AGG", col("SpotImages.url")), "previewImages"],
+          ],
           required: false, // Allow spots with no images
         },
       ],
