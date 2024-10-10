@@ -1,6 +1,12 @@
 <!-- include the API documentation and the database schema -->
 <!-- for the API project that you are implementing. -->
 
+npx dotenv sequelize db:migrate
+npx dotenv sequelize db:seed:all
+
+npx dotenv sequelize db:migrate:undo
+npx dotenv sequelize db:seed:undo:all
+
 # `homeAway`
 
 ## Database Schema Design
@@ -1528,3 +1534,4 @@ Return spots filtered by query parameters.
       }
     }
     ```
+# MOD-5-PROJECT
